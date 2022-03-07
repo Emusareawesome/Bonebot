@@ -1,8 +1,9 @@
+import discord
 import requests
 import bs4
 
 
-def get_food_list(tag):  # TODO: sort by Rosie's, Sizzle, etc. Maybe add some
+def get_food_list(tag):
     food_elements = tag.find(id=tag.find(class_="c-tab__list site-panel__daypart-tab-list")
                              .button.attrs['aria-controls']).div.find_all(class_="h4 site-panel__daypart-item-title")
     station_elements = tag.find(id=tag.find(class_="c-tab__list site-panel__daypart-tab-list")
@@ -10,6 +11,7 @@ def get_food_list(tag):  # TODO: sort by Rosie's, Sizzle, etc. Maybe add some
 
     items = {}
 
+    # Split up by different stations
     for i in range(len(station_elements)):
         station = station_elements[i].getText()
         if station in items:
@@ -31,29 +33,15 @@ def get_menu():
         res.raise_for_status()
         soup = bs4.BeautifulSoup(res.text, 'lxml')
 
-        breakfast = soup.select('#breakfast')
-        brunch = soup.select('#brunch')
-        lunch = soup.select('#lunch')
-        dinner = soup.select('#dinner')
+        soup_items = [soup.select('#breakfast'), soup.select('#brunch'), soup.select('#lunch'), soup.select('#dinner')]
 
         items = []
 
-        if len(breakfast) != 0:
-            items.append(get_food_list(breakfast[0]))
-        else:
-            items.append([])
-        if len(brunch) != 0:
-            items.append(get_food_list(brunch[0]))
-        else:
-            items.append([])
-        if len(lunch) != 0:
-            items.append(get_food_list(lunch[0]))
-        else:
-            items.append([])
-        if len(dinner) != 0:
-            items.append(get_food_list(dinner[0]))
-        else:
-            items.append([])
+        for i in soup_items:
+            if len(i) != 0:
+                items.append(get_food_list(i[0]))
+            else:
+                items.append([])
 
         return items
     except Exception as exc:
@@ -64,9 +52,15 @@ def get_menu():
 def menu_embed(items):
     if len(items) == 0:
         return "error getting menu items"
+    embed=discord.Embed(description="Today's Bone Menu", color=0xff0000)
     for i in range(len(items)):
         if len(items[i]) == 0:  # empty
             continue
+        # TODO: figure out if subfields are possible; if not, use buttons to switch between different embeds or make separate embed for each meal
         if i == 0:  # breakfast
+            # embed.add_field(name="Breakfast", value=items[i].)
+            for j in items[i].keys():
+                # idk
+    embed.set_footer(text='"I lost the game" -Hayden')
 
     return "pls fix"

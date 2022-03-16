@@ -32,6 +32,6 @@ bot = commands.Bot(command_prefix=config_data["prefix"], description=description
 async def on_ready():
     print(f"Logged in as {bot.user} (ID: {bot.user.id})")
     print("------")
-    bot.add_cog(menu_cog.MenuCog(bot, config_data))
+    await bot.add_cog(menu_cog.MenuCog(bot, config_data))
 
 bot.run(token)

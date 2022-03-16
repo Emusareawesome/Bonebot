@@ -1,4 +1,5 @@
 import discord.ext.commands
+from discord import app_commands
 from discord.ext import commands, tasks
 
 import datetime
@@ -15,14 +16,14 @@ class MenuCog(commands.Cog):
     def cog_unload(self):
         self.print_menu.cancel()
 
-    # @slash_command(guild_ids=[917618398819659866])
-    @commands.command()  # TODO: change into a slash command, not working with pycord atm
-    async def menu(self, ctx):
+    @app_commands.command(name="menu")
+    @app_commands.guilds(discord.Object(id=917618398819659866))  # TODO: Comment out when done testing
+    async def menu(self, interaction: discord.Interaction) -> None:
         menu_embed = menu.menu_embed(menu.get_menu())
         if isinstance(menu_embed, str):  # Menu failed to get, or no menu
-            await ctx.send("Error: Failed to get menu from website")
+            await interaction.response.send_message("Error: Failed to get menu from website")
             return
-        await ctx.send(embed=menu_embed)
+        await interaction.response.send_message(embed=menu_embed)
 
     @tasks.loop(time=[datetime.time(12)])  # 7AM EST
     async def print_menu(self):

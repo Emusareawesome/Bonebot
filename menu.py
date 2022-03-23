@@ -2,6 +2,10 @@ import discord
 import requests
 import bs4
 from datetime import date
+import json
+import os
+import random
+import logging
 
 
 def get_food_list(tag):
@@ -46,6 +50,19 @@ def get_menu():
         return []
 
 
+def get_footer_message():
+    if os.path.exists(os.getcwd() + "/config.json"):
+        with open(os.getcwd() + "/config.json") as f:
+            config_data = json.load(f)
+    else:
+        logging.log(logging.ERROR, "config file failed to find")
+        return "I lost the game"
+    if config_data["randomFooterMessage"]:
+        return config_data["footerMessages"][random.randint(0, len(config_data["footerMessages"]) - 1)]
+    else:
+        return "I lost the game"
+
+
 def menu_embed(items):
     if len(items) == 0:
         return "error getting menu items"
@@ -72,7 +89,6 @@ def menu_embed(items):
         if i != len(items) - 1:  # adds spacing between different meals
             embed.add_field(name="\u200b", value="\u200b", inline=False)
 
-    embed.set_footer(
-        text='"I lost the game" -Hayden')  # TODO: have a couple of footers to randomly pick for each embed
+    embed.set_footer(text=get_footer_message())
 
     return embed

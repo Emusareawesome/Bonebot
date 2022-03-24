@@ -1,0 +1,17 @@
+aiohttp==3.7.4.post0
+async-timeout==3.0.1
+attrs==21.4.0
+beautifulsoup4==4.10.0
+bs4==0.0.1
+certifi==2021.10.8
+chardet==4.0.0
+charset-normalizer==2.0.12
+discord.py @ git+https://github.com/Rapptz/discord.py@2d28d7b765016e0cf01b12048926ea2d6b52d24a
+idna==3.3
+lxml==4.8.0
+multidict==6.0.2
+requests==2.27.1
+soupsieve==2.3.1
+typing_extensions==4.1.1
+urllib3==1.26.8
+yarl==1.7.2

@@ -67,7 +67,7 @@ def menu_embed(items):
     if len(items) == 0:
         return "error getting menu items"
 
-    embed = discord.Embed(title="Menu for " + date.today().strftime("%m/%d/%y"), color=0xff0000)
+    embed = discord.Embed(title="Menu for " + date.today().strftime("%m/%d/%y"), color=0x800000)
     for i in range(len(items)):
         if len(items[i]) == 0:  # empty
             continue

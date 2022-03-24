@@ -16,7 +16,7 @@ class MenuCog(commands.Cog):
     def cog_unload(self):
         self.print_menu.cancel()
 
-    @app_commands.command(name="menu")
+    @app_commands.command(name="menu", description="Today's menu at the Bon")
     @app_commands.guilds(discord.Object(id=917618398819659866))  # TODO: Comment out when done testing
     async def menu(self, interaction: discord.Interaction) -> None:
         await interaction.response.defer(thinking=True)
@@ -26,7 +26,7 @@ class MenuCog(commands.Cog):
             return
         await interaction.followup.send(embed=menu_embed)
 
-    @tasks.loop(time=[datetime.time(12)])  # 7AM EST
+    @tasks.loop(time=[datetime.time(11)])  # 7AM local, TODO: replace with datetime with timezone
     async def print_menu(self):
         print("sending message")
         menu_embed = menu.menu_embed(menu.get_menu())

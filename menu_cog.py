@@ -19,11 +19,12 @@ class MenuCog(commands.Cog):
     @app_commands.command(name="menu")
     @app_commands.guilds(discord.Object(id=917618398819659866))  # TODO: Comment out when done testing
     async def menu(self, interaction: discord.Interaction) -> None:
+        await interaction.response.defer(thinking=True)
         menu_embed = menu.menu_embed(menu.get_menu())
         if isinstance(menu_embed, str):  # Menu failed to get, or no menu
-            await interaction.response.send_message("Error: Failed to get menu from website")
+            await interaction.followup.send("Error: Failed to get menu from website")
             return
-        await interaction.response.send_message(embed=menu_embed)
+        await interaction.followup.send(embed=menu_embed)
 
     @tasks.loop(time=[datetime.time(12)])  # 7AM EST
     async def print_menu(self):

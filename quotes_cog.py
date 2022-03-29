@@ -41,3 +41,12 @@ class QuotesCog(commands.Cog):
                 logging.log(logging.INFO, message.content)
         logging.log(logging.INFO, "Finished loading quotes")
 
+    @commands.Cog.listener()
+    async def on_message(self, message: discord.Message):
+        if message.channel != self.bot.get_channel(self.config_data["quotesChannel"]) \
+                or message.author.id == self.bot.application_id:
+            return
+        if message.content.startswith('"'):
+            self.quotes.append(message)
+            logging.log(logging.INFO, "Added quote")
+

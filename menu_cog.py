@@ -17,7 +17,6 @@ class MenuCog(commands.Cog):
         self.print_menu.cancel()
 
     @app_commands.command(name="menu", description="Today's menu at the Bon")
-    @app_commands.guilds(discord.Object(id=917618398819659866))  # TODO: Comment out when done testing
     async def menu(self, interaction: discord.Interaction) -> None:
         await interaction.response.defer(thinking=True)
         menu_embed = menu.menu_embed(menu.get_menu())

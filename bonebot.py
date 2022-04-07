@@ -1,6 +1,7 @@
 import os
 
 import discord
+import typing
 from discord.ext import commands
 
 import logging
@@ -38,7 +39,33 @@ async def on_ready():
     print("------")
     await bot.add_cog(menu_cog.MenuCog(bot, config_data))
     await bot.add_cog(quotes_cog.QuotesCog(bot, config_data))
-    await tree.sync(guild=discord.Object(id=917618398819659866))
+    # await tree.sync(guild=discord.Object(id=917618398819659866))
 
+#  !sync ~ for guild sync
+@bot.command()
+@commands.is_owner()
+async def sync(ctx: commands.Context, guilds: commands.Greedy[discord.Object], spec: typing.Optional[typing.Literal["~"]] = None) -> None:
+  if not guilds:
+      if spec == "~":
+          fmt = await ctx.bot.tree.sync(guild=ctx.guild)
+      else:
+          fmt = await ctx.bot.tree.sync()
+
+      await ctx.send(
+          f"Synced {len(fmt)} commands {'globally' if spec is not None else 'to the current guild.'}"
+      )
+      return
+
+  assert guilds is not None
+  fmt = 0
+  for guild in guilds:
+      try:
+          await ctx.bot.tree.sync(guild=guild)
+      except discord.HTTPException:
+          pass
+      else:
+          fmt += 1
+
+  await ctx.send(f"Synced the tree to {fmt}/{len(guilds)} guilds.")
 
 bot.run(token)

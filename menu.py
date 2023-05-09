@@ -83,7 +83,7 @@ def menu_embed(items):
             embed.add_field(name="Dinner", value="-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-", inline=False)
 
         for j in items[i].keys():
-            if j != "@spa waters" and j != "@kettles":  # TODO: put these in a config file to blacklist
+            if j != "@spa waters":  # TODO: put these in a config file to blacklist
                 embed.add_field(name=j, value='\n'.join(items[i][j]), inline=True)
 
         if i != len(items) - 1:  # adds spacing between different meals
